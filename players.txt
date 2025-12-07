@@ -1,0 +1,3 @@
+user001 0
+thanpisit 40
+peerawat 50

@@ -1,0 +1,3 @@
+cd "/Users/thanpisit/KMUTT/CPE100/Project/" && \
+gcc main.c player.c level1.c level2.c level3.c level4.c level5.c -o main && \
+"./main"

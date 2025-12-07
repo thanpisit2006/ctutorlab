@@ -1,0 +1,22 @@
+C-Tutor-Lab/
+│
+├── main.c
+│       └─ Main game controller
+├── player.h
+│       └─ Player data structure + function declarations
+├── player.c
+│       └─ Player system implementation
+├── levels.h
+│       └─ Level function declarations
+├── level1.c
+│       └─ Level 1
+├── level2.c
+│       └─ Level 2
+├── level3.c
+│       └─ Level 3
+├── level4.c
+│       └─ Level 4
+├── level5.c
+│       └─ Level 5
+└── players.txt   (auto-created)
+        └─ Stores username + score

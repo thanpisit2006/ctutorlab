@@ -1,0 +1,63 @@
+C-Tutor-Lab/
+│
+├── main.c
+│       └─ (Main game controller)
+│          • Handles welcome screen
+│          • Handles Register/Login process
+│          • Shows Game Menu
+│          • Calls each level play function
+│
+├── player.h
+│       └─ (Player data structure + function declarations)
+│          • Player struct
+│          • load_all_players()
+│          • save_all_players()
+│          • register_player()
+│          • login_player()
+│          • update_player_score()
+│          • print_player_info()
+│
+├── player.c
+│       └─ (Player system implementation)
+│          • Read/write players.txt
+│          • Manage user registration & login
+│          • Update player score
+│
+├── levels.h
+│       └─ (Level function declarations)
+│          • play_level1()
+│          • play_level2()
+│          • play_level3()
+│          • play_level4()
+│          • play_level5()
+│
+├── level1.c
+│       └─ (Level 1)
+│          • Currently under development
+│          • Adds +10 points
+│
+├── level2.c
+│       └─ (Level 2)
+│          • Currently under development
+│          • Adds +10 points
+│
+├── level3.c
+│       └─ (Level 3)
+│          • Currently under development
+│          • Adds +10 points
+│
+├── level4.c
+│       └─ (Level 4)
+│          • Currently under development
+│          • Adds +10 points
+│
+├── level5.c
+│       └─ (Level 5)
+│          • Currently under development
+│          • Adds +10 points
+│
+└── players.txt   (auto-created)
+        └─ Stores username + score
+           Example:
+           bank 40
+           pnoi 10
