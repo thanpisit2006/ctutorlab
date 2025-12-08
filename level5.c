@@ -3,24 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "levels.h" // Assumes levels.h contains Player struct and update_player_score
-
-// Constants and helper functions are assumed to be defined globally
-// or included from another file (like in the original level1.c).
-// For simplicity, we will assume the helper functions (ask_code_step,
-// run_mini_exercise, read_line, trim_spaces) and color definitions
-// are available as they were in level 1.
-
-// Placeholder definitions for helpers and colors (assuming they are not in levels.h)
-// Note: In a real project, these should be shared or imported correctly.
-
-// #define COLOR_GREEN "\x1b[32m"
-// #define COLOR_RED   "\x1b[31m"
-// #define COLOR_RESET "\x1b[0m"
-// static int ask_code_step(const char *instruction, const char *expected);
-// static void read_line(char *buffer, int size);
-// static void trim_spaces(char *s);
-// static int run_mini_exercise_L5(void); // Defined below
+#include "levels.h"
 
 /* Ask the player to type a specific line of C code exactly.
  * (Assumed to be defined elsewhere, e.g., in level1.c or a shared file)
