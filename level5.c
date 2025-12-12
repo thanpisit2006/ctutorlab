@@ -5,9 +5,6 @@
 #include <string.h>
 #include "levels.h"
 
-/* Ask the player to type a specific line of C code exactly.
- * (Assumed to be defined elsewhere, e.g., in level1.c or a shared file)
- */
 extern int ask_code_step(const char *instruction, const char *expected);
 extern void read_line(char *buffer, int size);
 extern void trim_spaces(char *s);
@@ -17,7 +14,7 @@ extern void trim_spaces(char *s);
 #define COLOR_RESET "\x1b[0m"
 
 
-/* Mini exercise with simple "test cases" about switch case concepts */
+/* Mini exercise*/
 static int run_mini_exercise_L5(void) {
     char answer[128];
     int test_score = 0;
@@ -65,12 +62,12 @@ static int run_mini_exercise_L5(void) {
 
     printf("\nMini exercise finished. You passed %d / 3 test cases.\n", test_score);
     /* Convert to points, for example 3 points max */
-    return test_score * 3;  /* 0, 3, 6, or 9 points */
+    return test_score * 3;
 }
 
 void play_level5(Player *player) {
     int level_score = 0; // Initialize score for this level
-    char buffer[64];     // Buffer for reading user input (e.g., readiness check)
+    char buffer[64];     // Buffer for reading user input
 
     printf("\n=== Level 5: The 'switch case' Statement ===\n");
     printf("In this level, you will practice using the 'switch case'\n");
