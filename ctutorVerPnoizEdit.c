@@ -733,38 +733,150 @@ void play_level4(Player *player) {
     }
 }
 
+/* =======================================
+   Level 5: switch case (Helper Functions)
+   ======================================= */
+
+static int ask_code_step_with_explanation(const char *instruction,
+                                           const char *expected,
+                                           const char *explanation) {
+    char input[256];
+
+    while (1) {
+        printf("\n%s\n", instruction);
+        printf("Your code: ");
+        // Assuming read_line and trim_spaces are available globally
+        read_line(input, sizeof(input));
+        trim_spaces(input);
+
+        if (strcmp(input, expected) == 0) {
+            // Correct, return 1 point
+            printf(COLOR_GREEN "Correct: %s" COLOR_RESET "\n", input);
+            return 1;
+        } else {
+            printf(COLOR_RED "Incorrect. Please try again." COLOR_RESET "\n");
+            // 1. Error Explanation
+            printf(COLOR_RED "Reasoning:" COLOR_RESET " %s\n", explanation);
+            printf("Expected pattern: %s\n", expected);
+        }
+    }
+}
+
+
+/* Mini exercise with test cases*/
+static int run_mini_exercise_L5(void) {
+    char answer[128];
+    int test_score = 0;
+
+    printf("\n" COLOR_CYAN "=== Mini Exercise: switch case Concepts ===" COLOR_RESET "\n");
+
+    /* Test case 1: The 'default' keyword */
+    printf("\nTest Case 1:\n");
+    printf("Question: If no case matches the value in the switch statement, which command block is executed? (Answer with the specific C keyword)\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    if (strcmp(answer, "default") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 1 passed." COLOR_RESET "\n");
+        test_score += 1;
+    } else {
+        printf(COLOR_RED "✗ Test Case 1 failed. Expected: default" COLOR_RESET "\n");
+    }
+
+    /* Test case 2: Preventing fall-through */
+    printf("\nTest Case 2:\n");
+    printf("Question: Which statement must be placed at the end of each case block (unless fall-through is desired) to prevent the program from executing the next case? (Answer with the specific C keyword)\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    if (strcmp(answer, "break") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 2 passed." COLOR_RESET "\n");
+        test_score += 1;
+    } else {
+        printf(COLOR_RED "✗ Test Case 2 failed. Expected: break" COLOR_RESET "\n");
+    }
+
+    /* Test case 3: Writing a correct case for a character */
+    printf("\nTest Case 3:\n");
+    printf("Question: Write the correct C code line to start a case for the value 'A' (a character) in a switch statement (include the colon ':').\n");
+    printf("Your answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    if (strcmp(answer, "case 'A':") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 3 passed." COLOR_RESET "\n");
+        test_score += 1;
+    } else {
+        printf(COLOR_RED "✗ Test Case 3 failed. Expected: case 'A':" COLOR_RESET "\n");
+    }
+
+    printf("\nMini exercise finished. You passed %d / 3 test cases.\n", test_score);
+    return test_score * 3;
+}
+
+
 /* ---------------------------
-   LEVEL 5 TEMPLATE
+   LEVEL 5: The 'switch case' Statement
    --------------------------- */
 void play_level5(Player *player) {
     int level_score = 0;
-    char buf[128];
+    char buffer[64];
 
-    printf("\n=== Level 5: [PUT YOUR TOPIC HERE] ===\n");
-    printf("Description: [Explain what this level teaches]\n");
+    printf("\n=== Level 5: The 'switch case' Statement ===\n");
+    printf("Description: Practice using the 'switch' control structure, including 'case', 'break', 'default', and fall-through logic.\n");
+    
 
+    // Ask if the player is ready
     printf("\nReady? (y/n): ");
-    read_line(buf, sizeof(buf));
-    if (buf[0] != 'y' && buf[0] != 'Y') {
+    read_line(buffer, sizeof(buffer));
+    if (buffer[0] != 'y' && buffer[0] != 'Y') {
         printf("Returning to main menu.\n");
         return;
     }
 
-    /* TODO (Team Level 5): put your code here */
+    printf("\n--- Step-by-step Coding Practice (Easy/Medium/Hard) ---\n");
+
+    /* Easy: Initialize and start the switch (2 points) */
+    level_score += ask_code_step_with_explanation(
+        "Easy (2 points): Declare an integer variable named 'day' and start a switch statement using it.",
+        "switch (day) {",
+        "You must declare the switch statement using the 'switch' keyword, followed by the variable in parentheses, and an opening brace '{' to start the block."
+    ) ? 2 : 0;
+
+    /* Medium: Simple case and break (3 points) */
+    level_score += ask_code_step_with_explanation(
+        "Medium (3 points): Inside the switch, create a case for the value 1. Print the string 'Monday' and ensure the flow stops after this case.",
+        "case 1: printf(\"Monday\\n\"); break;",
+        "Every case must end with a colon ':' and include a 'break;' statement to prevent 'fall-through' into the next case's code. Remember to use 'printf' correctly."
+    ) ? 3 : 0;
+
+    /* Hard: Combined case (Fall-through) and default (5 points) */
+    level_score += ask_code_step_with_explanation(
+        "Hard (5 points): Write the code for case 6 and case 7 combined to print 'Weekend' (using fall-through), followed by the default case to print 'Error'.",
+        "case 6: case 7: printf(\"Weekend\\n\"); break; default: printf(\"Error\\n\"); break;",
+        "To combine multiple cases, you stack the 'case' labels without a 'break;'. The 'default' case handles all non-matching values, and it's good practice to include a final 'break;' for clarity, although not strictly necessary at the very end."
+    ) ? 5 : 0;
+
+    printf("\nYou have finished the guided coding steps.\n");
+    printf("Now we will move on to a small exercise with test cases to check your understanding of switch concepts.\n");
+
+    /* Run mini exercise and add its score */
+    level_score += run_mini_exercise_L5();
 
     printf("\nLevel 5 completed.\n");
     printf("You earned %d points in this level.\n", level_score);
 
+    // Update the player's total score
     if (level_score > 0) {
         if (update_player_score(player, level_score)) {
             printf("Your new total score: %d\n", player->score);
         } else {
-            printf("Failed to update your score.\n");
+            printf("Failed to update your score in the player database.\n");
         }
     } else {
-        printf("No points earned this time.\n");
+        printf("No points earned this time. Review the 'switch case' concepts and try again!\n");
     }
 }
+/*----------------------End of Levels-----------------------------*/
 
 /* ===========================
    main.c (merged)
@@ -868,4 +980,5 @@ int main(void) {
     }
 
     return 0;
+
 }
