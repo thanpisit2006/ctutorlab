@@ -809,24 +809,141 @@ void play_level3(Player *player) {
     }
 }
 
+
 /* ---------------------------
-   LEVEL 4 TEMPLATE
+   LEVEL 4: Arrays
    --------------------------- */
+
+/* ---------- Helper Explanation ---------- */
+static void explain_mistake_L4(const char *expected, int test_case) {
+    printf(COLOR_YELLOW "\n💡 Explanation: " COLOR_RESET);
+
+    switch (test_case) {
+        case 1:
+            printf("Array indexing in C starts from 0.\n");
+            printf("So a[0] refers to the first element.\n");
+            break;
+        case 2:
+            printf("The third element has index 2.\n");
+            printf("Indexing goes 0, 1, 2.\n");
+            break;
+        case 3:
+            printf("To access the third element, use arr[2];\n");
+            printf("Square brackets [] are required.\n");
+            break;
+    }
+    printf("\n");
+}
+
+/* ---------- Mini Exercise ---------- */
+static int run_mini_exercise_L4(void) {
+    char answer[128];
+    int test_score = 0;
+
+    printf("\n" COLOR_CYAN "=== Mini Exercise: Array Concepts ===" COLOR_RESET "\n");
+
+    /* Test Case 1 */
+    printf("\nTest Case 1:\n");
+    printf("Question: Given int a[3] = {4, 5, 6}; what is the value of a[0]?\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+
+    if (strcmp(answer, "4") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 1 passed.\n" COLOR_RESET);
+        test_score++;
+    } else {
+        printf(COLOR_RED "✗ Test Case 1 failed. Expected: 4\n" COLOR_RESET);
+        explain_mistake_L4("4", 1);
+    }
+
+    /* Test Case 2 */
+    printf("\nTest Case 2:\n");
+    printf("Question: What index represents the third element of an array?\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+
+    if (strcmp(answer, "2") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 2 passed.\n" COLOR_RESET);
+        test_score++;
+    } else {
+        printf(COLOR_RED "✗ Test Case 2 failed. Expected: 2\n" COLOR_RESET);
+        explain_mistake_L4("2", 2);
+    }
+
+    /* Test Case 3 */
+    printf("\nTest Case 3:\n");
+    printf("Question: Write the correct C expression to access the third element of array 'arr' (include semicolon).\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+
+    if (strcmp(answer, "arr[2];") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 3 passed.\n" COLOR_RESET);
+        test_score++;
+    } else {
+        printf(COLOR_RED "✗ Test Case 3 failed. Expected: arr[2];\n" COLOR_RESET);
+        explain_mistake_L4("arr[2];", 3);
+    }
+
+    printf("\nMini exercise finished. Passed %d / 3 cases.\n", test_score);
+    return test_score * 3;   /* 0, 3, 6, 9 */
+}
+
+/* ---------- Main Level 4 ---------- */
 void play_level4(Player *player) {
     int level_score = 0;
-    char buf[128];
+    char buffer[64];
 
-    printf("\n=== Level 4: [PUT YOUR TOPIC HERE] ===\n");
-    printf("Description: [Explain what this level teaches]\n");
+    printf("\n=== Level 4: Arrays ===\n");
+    printf("Description: Learn how to store multiple values using arrays,\n");
+    printf("access elements by index, and process data using loops.\n");
 
     printf("\nReady? (y/n): ");
-    read_line(buf, sizeof(buf));
-    if (buf[0] != 'y' && buf[0] != 'Y') {
+    read_line(buffer, sizeof(buffer));
+    if (buffer[0] != 'y' && buffer[0] != 'Y') {
         printf("Returning to main menu.\n");
         return;
     }
 
-    /* TODO (Team Level 4): put your code here */
+    printf("\n--- Step-by-step Coding Practice ---\n");
+    printf("Goal: Calculate the sum of elements in an integer array.\n");
+
+    level_score += ask_code_step(
+        "Step 1 (2 pts): Declare an integer array named 'arr' with values 1, 2, and 3.",
+        "int arr[3] = {1, 2, 3};"
+    ) ? 2 : 0;
+
+    level_score += ask_code_step(
+        "Step 2 (2 pts): Declare an integer variable named 'sum' and initialize it to 0.",
+        "int sum = 0;"
+    ) ? 2 : 0;
+
+    level_score += ask_code_step(
+        "Step 3 (3 pts): Write a for loop that iterates from i = 0 while i < 3 (include '{').",
+        "for (int i = 0; i < 3; i++) {"
+    ) ? 3 : 0;
+
+    level_score += ask_code_step(
+        "Step 4 (3 pts): Inside the loop, add the current array element to sum.",
+        "sum += arr[i];"
+    ) ? 3 : 0;
+
+    level_score += ask_code_step(
+        "Step 5 (2 pts): Close the for loop block.",
+        "}"
+    ) ? 2 : 0;
+
+    level_score += ask_code_step(
+        "Step 6 (3 pts): Print the sum using printf with format \"Sum = %d\\n\".",
+        "printf(\"Sum = %d\\n\", sum);"
+    ) ? 3 : 0;
+
+    printf("\nYou have finished the guided coding steps.\n");
+    printf("Now we will check your understanding with a mini exercise.\n");
+
+    level_score += run_mini_exercise_L4();
 
     printf("\nLevel 4 completed.\n");
     printf("You earned %d points in this level.\n", level_score);
@@ -838,9 +955,10 @@ void play_level4(Player *player) {
             printf("Failed to update your score.\n");
         }
     } else {
-        printf("No points earned this time.\n");
+        printf("No points earned this time. Review array concepts and try again!\n");
     }
 }
+
 
 /* =======================================
    Level 5: switch case (Helper Functions)
@@ -1091,4 +1209,3 @@ int main(void) {
     return 0;
 
 }
-
