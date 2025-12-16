@@ -674,140 +674,143 @@ void play_level2(Player *player) {
    LEVEL 3: if-else Statement
    =========================== */
 
-/* ---------- Mini Exercise ---------- */
-static int run_mini_exercise_L3(void) {
-    char answer[128];
-    int test_score = 0;
-
-    printf("\n" COLOR_CYAN "=== Mini Exercise: if-else Concepts ===" COLOR_RESET "\n");
-
-    /* Test Case 1 */
-    printf("\nTest Case 1:\n");
-    printf("Question: Which keyword is used to check a condition in C?\n");
-    printf("Answer: ");
-    read_line(answer, sizeof(answer));
-    trim_spaces(answer);
-    if (strcmp(answer, "if") == 0) {
-        printf(COLOR_GREEN "✓ Passed\n" COLOR_RESET);
-        test_score++;
-    } else {
-        printf(COLOR_RED "✗ Failed. Expected: if\n" COLOR_RESET);
+/* ใช้เฉพาะใน level 3 */
+static void level3_remove_spaces(char *s) {
+    char *src = s;
+    char *dst = s;
+    while (*src) {
+        if (*src != ' ' && *src != '\t') {
+            *dst++ = *src;
+        }
+        src++;
     }
-
-    /* Test Case 2 */
-    printf("\nTest Case 2:\n");
-    printf("Question: Which keyword is used when the if condition is false?\n");
-    printf("Answer: ");
-    read_line(answer, sizeof(answer));
-    trim_spaces(answer);
-    if (strcmp(answer, "else") == 0) {
-        printf(COLOR_GREEN "✓ Passed\n" COLOR_RESET);
-        test_score++;
-    } else {
-        printf(COLOR_RED "✗ Failed. Expected: else\n" COLOR_RESET);
-    }
-
-    /* Test Case 3 */
-    printf("\nTest Case 3:\n");
-    printf("Question: Write a condition that checks if x is equal to 10.\n");
-    printf("Answer: ");
-    read_line(answer, sizeof(answer));
-    trim_spaces(answer);
-    if (strcmp(answer, "x == 10") == 0) {
-        printf(COLOR_GREEN "✓ Passed\n" COLOR_RESET);
-        test_score++;
-    } else {
-        printf(COLOR_RED "✗ Failed. Expected: x == 10\n" COLOR_RESET);
-    }
-
-    printf("\nMini exercise finished. Passed %d / 3 cases.\n", test_score);
-    return test_score * 3;   /* 0, 3, 6, 9 */
+    *dst = '\0';
 }
 
-/* ---------- Main Level 3 ---------- */
+/* ---------- Mini Exercise (syntax check) ---------- */
+static int run_mini_exercise_L3(void) {
+    char answer[256];
+    int score = 0;
+
+    printf("\n=== Mini Exercise: if–else Syntax ===\n");
+
+    /* EASY */
+    printf("\n[EASY] Write an if statement that checks if x is greater than 0.\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    level3_remove_spaces(answer);
+
+    if (strcmp(answer, "if(x>0){") == 0) {
+        printf(COLOR_GREEN "✓ Correct\n" COLOR_RESET);
+        score += 2;
+    } else {
+        printf(COLOR_RED "✗ Incorrect\n" COLOR_RESET);
+        printf("Expected example: if (x > 0) {\n");
+    }
+
+    /* MEDIUM */
+    printf("\n[MEDIUM] Write an if–else that prints \"Safe\" if wind < 10, otherwise \"Danger\".\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    level3_remove_spaces(answer);
+
+    if (strcmp(answer,
+        "if(wind<10){printf(\"Safe\");}else{printf(\"Danger\");}") == 0) {
+        printf(COLOR_GREEN "✓ Correct\n" COLOR_RESET);
+        score += 4;
+    } else {
+        printf(COLOR_RED "✗ Incorrect\n" COLOR_RESET);
+        printf("One valid answer:\n");
+        printf("if (wind < 10) { printf(\"Safe\"); } else { printf(\"Danger\"); }\n");
+    }
+
+    /* HARD */
+    printf("\n[HARD] Write if–else if–else for hunger:\n");
+    printf("0–3 -> Eat 1 bowl, 4–6 -> Eat 2 bowls, else -> Eat 3 bowls\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    level3_remove_spaces(answer);
+
+    if (strcmp(answer,
+        "if(hunger<=3){printf(\"Eat1bowl\");}else if(hunger<=6){printf(\"Eat2bowls\");}else{printf(\"Eat3bowls\");}") == 0) {
+        printf(COLOR_GREEN "✓ Correct\n" COLOR_RESET);
+        score += 6;
+    } else {
+        printf(COLOR_RED "✗ Incorrect\n" COLOR_RESET);
+        printf("Hint: Use if / else if / else\n");
+    }
+
+    printf("\nMini Exercise finished. Score: %d\n", score);
+    return score;
+}
+
+/* ---------- MAIN LEVEL FUNCTION ---------- */
 void play_level3(Player *player) {
     int level_score = 0;
     char buffer[64];
 
-    printf("\n=== Level 3: The if-else Statement ===\n");
-    printf("Learn how to control program flow using if, else if, and else.\n");
+    printf("\n=== Level 3: IF–ELSE Decision Making ===\n");
+    printf("Story: You are surviving on a deserted island.\n");
+    printf("You must make decisions using if–else statements.\n");
 
-    printf("\nReady? (y/n): ");
+    printf("\nAre you ready? (y/n): ");
     read_line(buffer, sizeof(buffer));
     if (buffer[0] != 'y' && buffer[0] != 'Y') {
-        printf("Returning to main menu.\n");
+        printf("Returning to menu...\n");
         return;
     }
+        printf("\n--- Teaching: if Statement ---\n");
+    printf("An if statement is used to make decisions in a program.\n");
+    printf("It runs code only when the condition is true.\n");
 
-    printf("\n--- Step-by-step Coding Practice ---\n");
+    printf("\nExample:\n");
+    printf("int x = 5;\n");
+    printf("if (x > 0) {\n");
+    printf("    printf(\"Positive\");\n");
+    printf("}\n");
 
-    /* ================= EASY ================= */
+    printf("\nExplanation:\n");
+    printf("- if (x > 0) checks the condition\n");
+    printf("- Code inside { } runs only if the condition is true\n");
+
+    printf("\nPress Enter to continue to practice...");
+    read_line(buffer, sizeof(buffer));
+
+    
+
+    printf("\n--- Step-by-step Practice ---\n");
+
     level_score += ask_code_step(
-        "Easy (2 points): Write an if statement that checks if x is greater than 0.",
+        "Step 1: Write an if statement that checks if x is greater than 0.",
         "if (x > 0) {"
     ) ? 2 : 0;
 
     level_score += ask_code_step(
-        "Easy: Print \"Positive\" inside the if block.",
-        "printf(\"Positive\\n\");"
+        "Step 2: Inside the if block, print \"Positive\".",
+        "printf(\"Positive\");"
     ) ? 2 : 0;
 
     level_score += ask_code_step(
-        "Easy: Close the if block.",
+        "Step 3: Close the if block.",
         "}"
     ) ? 1 : 0;
 
-    /* ================= MEDIUM ================= */
-    level_score += ask_code_step(
-        "Medium (3 points): Write an else if statement that checks if x equals 0.",
-        "else if (x == 0) {"
-    ) ? 3 : 0;
+    printf("\nNow try the exercises.\n");
 
-    level_score += ask_code_step(
-        "Medium: Print \"Zero\" inside the else if block.",
-        "printf(\"Zero\\n\");"
-    ) ? 2 : 0;
-
-    level_score += ask_code_step(
-        "Medium: Close the else if block.",
-        "}"
-    ) ? 1 : 0;
-
-    /* ================= HARD ================= */
-    level_score += ask_code_step(
-        "Hard (4 points): Write an else block.",
-        "else {"
-    ) ? 4 : 0;
-
-    level_score += ask_code_step(
-        "Hard: Print \"Negative\" inside the else block.",
-        "printf(\"Negative\\n\");"
-    ) ? 2 : 0;
-
-    level_score += ask_code_step(
-        "Hard: Close the else block.",
-        "}"
-    ) ? 1 : 0;
-
-    printf("\nYou have completed the guided coding steps.\n");
-    printf("Now let's test your understanding.\n");
-
-    /* Mini Exercise */
     level_score += run_mini_exercise_L3();
 
     printf("\nLevel 3 completed.\n");
-    printf("You earned %d points in this level.\n", level_score);
+    printf("You earned %d points.\n", level_score);
 
     if (level_score > 0) {
-        if (update_player_score(player, level_score)) {
-            printf("Your new total score: %d\n", player->score);
-        } else {
-            printf("Failed to update your score.\n");
-        }
-    } else {
-        printf("No points earned this time. Keep practicing!\n");
+        update_player_score(player, level_score);
+        printf("Total score: %d\n", player->score);
     }
 }
+
 
 
 /* ---------------------------
@@ -1209,3 +1212,4 @@ int main(void) {
     return 0;
 
 }
+
