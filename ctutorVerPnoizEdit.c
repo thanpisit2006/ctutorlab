@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /* ===========================
    "player.h" (merged)
@@ -211,7 +212,7 @@ void print_player_info(const Player *player) {
 }
 
 /* ===========================
-   level1.c (merged)
+   level1.c (merged)  ✅ FIXED: teaching -> mini(syntax) -> 3 Qs (E/M/H) + explanations
    =========================== */
 
 #define COLOR_GREEN "\x1b[32m"
@@ -250,6 +251,7 @@ static void trim_spaces(char *s) {
     }
 }
 
+/* strict step checker (เหมือนเดิม) */
 static int ask_code_step(const char *instruction, const char *expected) {
     char input[256];
 
@@ -267,85 +269,196 @@ static int ask_code_step(const char *instruction, const char *expected) {
         }
     }
 }
-// ใช้ยังงี้ดีกว่าไหม //
-// int ask_code_step(const char *instruction, const char *expected) {
-//     char answer[256];
-//     printf("\n%s\n", instruction);
-//     printf("Expected: %s\n", expected);
-//     printf("Your answer: ");
-//     read_line(answer, sizeof(answer));
-//     trim_spaces(answer);
-    
-//     if (strcmp(answer, expected) == 0) {
-//         printf(COLOR_GREEN "✓ Correct!\n" COLOR_RESET);
-//         return 1;
-//     } else {
-//         printf(COLOR_RED "✗ Incorrect. Expected: %s\n" COLOR_RESET, expected);
-//         return 0;
-//     }
-// }
 
-static int run_mini_exercise(void) {
-    char answer[128];
+/* ---------- L1 Explanation helpers (ใหม่) ---------- */
+static void explain_mistake_L1(const char *expected, int test_case) {
+    (void)expected;
+
+    printf(COLOR_YELLOW "\n💡 Explanation: " COLOR_RESET);
+
+    switch (test_case) {
+        case 1: /* %d */
+            printf("%%d is the format specifier for an integer (int).\n");
+            printf("- It always starts with '%%'\n");
+            printf("- 'd' means decimal integer\n");
+            printf("Example: printf(\"Age: %%d\\n\", age);\n");
+            break;
+
+        case 2: /* %s */
+            printf("%%s is the format specifier for a string (char array).\n");
+            printf("Example: printf(\"Name: %%s\\n\", name);\n");
+            break;
+
+        case 3: /* printf statement */
+            printf("A complete printf statement needs:\n");
+            printf("- printf( ... );\n");
+            printf("- Double quotes \"...\" around the message\n");
+            printf("- \\n for a newline\n");
+            printf("- A semicolon ; at the end\n");
+            printf("Example: printf(\"%%d\\n\", 42);\n");
+            break;
+
+        case 4: /* scanf int */
+            printf("scanf for int uses %%d and MUST use & to store into the variable.\n");
+            printf("Example: scanf(\"%%d\", &age);\n");
+            break;
+
+        case 5: /* float %f */
+            printf("%%f is used to print floating-point numbers (float/double) with printf.\n");
+            printf("Example: printf(\"%%f\\n\", price);\n");
+            break;
+
+        default:
+            printf("Check the syntax carefully (symbols, quotes, spaces, semicolon).\n");
+            break;
+    }
+
+    printf("\n");
+}
+
+/* ---------- L1 Mini Exercise (syntax check) (แก้ใหม่ + มีอธิบาย) ---------- */
+static int run_mini_exercise_L1(void) {
+    char answer[256];
     int test_score = 0;
 
-    printf("\n=== Mini Exercise: Format Specifiers ===\n");
+    printf("\n" COLOR_CYAN "=== Mini Exercise (Syntax): Format Specifiers & printf ===" COLOR_RESET "\n");
+    printf("How to answer:\n");
+    printf("- Type the EXACT token/line requested (include %% and ; when asked)\n");
+    printf("- Example format: %%d   or   printf(\"%%d\\n\", 42);\n");
 
+    /* Test Case 1 */
     printf("\nTest Case 1:\n");
     printf("Question: What is the format specifier for an integer (int)?\n");
     printf("Answer: ");
     read_line(answer, sizeof(answer));
     trim_spaces(answer);
+
     if (strcmp(answer, "%d") == 0) {
-        printf(COLOR_GREEN "Test Case 1 passed." COLOR_RESET "\n");
+        printf(COLOR_GREEN "✓ Test Case 1 passed." COLOR_RESET "\n");
         test_score += 1;
     } else {
-        printf(COLOR_RED "Test Case 1 failed. Expected: %%d" COLOR_RESET "\n");
+        printf(COLOR_RED "✗ Test Case 1 failed. Expected: %%d" COLOR_RESET "\n");
+        explain_mistake_L1("%d", 1);
     }
 
+    /* Test Case 2 */
     printf("\nTest Case 2:\n");
     printf("Question: What is the format specifier for a string (char array)?\n");
     printf("Answer: ");
     read_line(answer, sizeof(answer));
     trim_spaces(answer);
+
     if (strcmp(answer, "%s") == 0) {
-        printf(COLOR_GREEN "Test Case 2 passed." COLOR_RESET "\n");
+        printf(COLOR_GREEN "✓ Test Case 2 passed." COLOR_RESET "\n");
         test_score += 1;
     } else {
-        printf(COLOR_RED "Test Case 2 failed. Expected: %%s" COLOR_RESET "\n");
+        printf(COLOR_RED "✗ Test Case 2 failed. Expected: %%s" COLOR_RESET "\n");
+        explain_mistake_L1("%s", 2);
     }
 
+    /* Test Case 3 */
     printf("\nTest Case 3:\n");
-    printf("Write a complete printf statement that prints the integer 42\n");
-    printf("with a newline. Use %%d as the format specifier.\n");
-    printf("One correct answer: printf(\"%%d\\n\", 42);\n");
-    printf("Your answer: ");
+    printf("Question: Write a complete printf statement that prints the integer 42 with a newline.\n");
+    printf("Requirement: Use %%d and include the semicolon ;\n");
+    printf("One valid answer: printf(\"%%d\\n\", 42);\n");
+    printf("Answer: ");
     read_line(answer, sizeof(answer));
     trim_spaces(answer);
+
     if (strcmp(answer, "printf(\"%d\\n\", 42);") == 0) {
-        printf(COLOR_GREEN "Test Case 3 passed." COLOR_RESET "\n");
+        printf(COLOR_GREEN "✓ Test Case 3 passed." COLOR_RESET "\n");
         test_score += 1;
     } else {
-        printf(COLOR_RED "Test Case 3 failed. One correct answer is:" COLOR_RESET "\n");
-        printf("printf(\"%%d\\n\", 42);\n");
+        printf(COLOR_RED "✗ Test Case 3 failed." COLOR_RESET "\n");
+        printf("Expected (one valid answer): printf(\"%%d\\n\", 42);\n");
+        explain_mistake_L1("printf(\"%d\\n\", 42);", 3);
     }
 
     printf("\nMini exercise finished. You passed %d / 3 test cases.\n", test_score);
-    return test_score * 3; /* 0, 3, 6, or 9 points */
+    return test_score * 3; /* 0, 3, 6, 9 points */
 }
 
+/* ---------- L1 Additional Exercise: 3 Questions (E/M/H) (ใหม่ + มีอธิบาย) ---------- */
+static int run_additional_exercise_L1(void) {
+    char answer[256];
+    int score = 0;
+
+    printf("\n" COLOR_CYAN "=== Additional Exercise: Easy / Medium / Hard ===" COLOR_RESET "\n");
+    printf("Answer rules: type the exact code/token requested.\n");
+
+    /* EASY */
+    printf("\n" COLOR_CYAN "[EASY]" COLOR_RESET " Question 1:\n");
+    printf("Question: What is the printf format specifier for a floating-point number?\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+
+    if (strcmp(answer, "%f") == 0) {
+        printf(COLOR_GREEN "✓ Correct (+3 points)" COLOR_RESET "\n");
+        score += 3;
+    } else {
+        printf(COLOR_RED "✗ Incorrect. Expected: %%f" COLOR_RESET "\n");
+        explain_mistake_L1("%f", 5);
+    }
+
+    /* MEDIUM */
+    printf("\n" COLOR_CYAN "[MEDIUM]" COLOR_RESET " Question 2:\n");
+    printf("Question: Write a printf statement that prints a string variable name with newline.\n");
+    printf("Expected pattern: printf(\"Hello, %%s\\n\", name);\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+
+    if (strcmp(answer, "printf(\"Hello, %s\\n\", name);") == 0) {
+        printf(COLOR_GREEN "✓ Correct (+5 points)" COLOR_RESET "\n");
+        score += 5;
+    } else {
+        printf(COLOR_RED "✗ Incorrect." COLOR_RESET "\n");
+        printf("One valid answer: printf(\"Hello, %%s\\n\", name);\n");
+        printf(COLOR_YELLOW "💡 Explanation: Use %%s for strings, include \\n, and end with ;\n" COLOR_RESET);
+    }
+
+    /* HARD */
+    printf("\n" COLOR_CYAN "[HARD]" COLOR_RESET " Question 3:\n");
+    printf("Question: Write a scanf statement to read an integer into variable age.\n");
+    printf("Requirement: Use %%d and include &age and semicolon ;\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+
+    if (strcmp(answer, "scanf(\"%d\", &age);") == 0) {
+        printf(COLOR_GREEN "✓ Correct (+7 points)" COLOR_RESET "\n");
+        score += 7;
+    } else {
+        printf(COLOR_RED "✗ Incorrect." COLOR_RESET "\n");
+        printf("Expected: scanf(\"%%d\", &age);\n");
+        explain_mistake_L1("scanf(\"%d\", &age);", 4);
+    }
+
+    printf("\nAdditional exercise finished. You earned %d points.\n", score);
+    return score;
+}
+
+/* ---------- Level 1 main (ปรับ flow ตาม Level 2) ---------- */
 void play_level1(Player *player) {
     int level_score = 0;
     char buffer[64];
 
     printf("\n=== Level 1: Data Types and Format Specifiers ===\n");
-    printf("In this level, you will practice basic C data types\n");
-    printf("and format specifiers used with printf(), such as %%d and %%s.\n\n");
 
-    printf("We will build a small piece of code step by step.\n");
-    printf("You must type each line of code exactly as requested.\n");
-    printf("If your code is correct, it will be shown in ");
-    printf(COLOR_GREEN "green" COLOR_RESET ".\n");
+    /* 1) Teaching */
+    printf("\n--- Teaching ---\n");
+    printf("In C, printf() uses format specifiers to print values:\n");
+    printf("  - %%d for int (integer)\n");
+    printf("  - %%s for string (char array)\n");
+    printf("  - %%f for float/double\n\n");
+    printf("Example:\n");
+    printf("  int age = 20;\n");
+    printf("  char name[50] = \"Bank\";\n");
+    printf("  printf(\"Age: %%d\\n\", age);\n");
+    printf("  printf(\"Name: %%s\\n\", name);\n");
+    printf("\nPress Enter to continue...");
+    read_line(buffer, sizeof(buffer));
 
     printf("\nAre you ready to start? (y/n): ");
     read_line(buffer, sizeof(buffer));
@@ -354,7 +467,9 @@ void play_level1(Player *player) {
         return;
     }
 
+    /* 2) Step-by-step practice (เหมือนเดิม) */
     printf("\n--- Step-by-step Coding Practice ---\n");
+    printf("You must type each line exactly as requested.\n");
 
     level_score += ask_code_step(
         "Step 1: Declare an integer variable named age.",
@@ -378,10 +493,13 @@ void play_level1(Player *player) {
         "printf(\"Name: %s\\n\", name);"
     ) ? 3 : 0;
 
-    printf("\nYou have finished the guided coding steps.\n");
-    printf("Now we will move on to a small exercise with test cases.\n");
+    printf("\nYou finished the guided steps.\n");
 
-    level_score += run_mini_exercise();
+    /* 3) Mini exercise (syntax) + explanations (ใหม่) */
+    level_score += run_mini_exercise_L1();
+
+    /* 4) 3 Questions (Easy/Medium/Hard) + explanations (ใหม่) */
+    level_score += run_additional_exercise_L1();
 
     printf("\nLevel 1 completed.\n");
     printf("You earned %d points in this level.\n", level_score);
@@ -450,33 +568,27 @@ static int read_int_in_range(const char *prompt, int min, int max) {
    --------------------------- */
 static void explain_mistake_L2(const char *user_answer, const char *expected, int test_case) {
     printf(COLOR_YELLOW "\n💡 Explanation: " COLOR_RESET);
-    
+
     switch(test_case) {
         case 1: // Initialization
-
-                printf("The correct syntax is: 'int i = 0;'\n");
-                printf("- 'int' declares the variable type\n");
-                printf("- 'i' is the variable name\n");
-                printf("- '= 0' initializes it to 0\n");
-                printf("- ';' ends the statement\n");
-            
+            printf("The correct syntax is: 'int i = 0;'\n");
+            printf("- 'int' declares the variable type\n");
+            printf("- 'i' is the variable name\n");
+            printf("- '= 0' initializes it to 0\n");
+            printf("- ';' ends the statement\n");
             break;
-            
+
         case 2: // Condition
-
-                printf("The condition 'i < 5;' means:\n");
-                printf("- Continue the loop while i is less than 5\n");
-                printf("- This will run for i = 0, 1, 2, 3, 4 (5 times total)\n");
-                printf("- Don't forget the semicolon!\n");
-
+            printf("The condition 'i < 5;' means:\n");
+            printf("- Continue the loop while i is less than 5\n");
+            printf("- This will run for i = 0, 1, 2, 3, 4 (5 times total)\n");
+            printf("- Don't forget the semicolon!\n");
             break;
-            
+
         case 3: // Increment
-        
-                printf("The increment operator 'i++' means:\n");
-                printf("- Add 1 to the value of i after each loop iteration\n");
-                printf("- It's shorthand for 'i = i + 1'\n");
-                
+            printf("The increment operator 'i++' means:\n");
+            printf("- Add 1 to the value of i after each loop iteration\n");
+            printf("- It's shorthand for 'i = i + 1'\n");
             break;
     }
     printf("\n");
@@ -581,7 +693,7 @@ static int run_additional_exercise_L2(void) {
     printf("Answer: ");
     read_line(answer, sizeof(answer));
     trim_spaces(answer);
-    if (strcmp(answer, "for (int i = 0; i <= 10; i += 2)") == 0 || 
+    if (strcmp(answer, "for (int i = 0; i <= 10; i += 2)") == 0 ||
         strcmp(answer, "for (int i = 0; i <= 10; i=i+2)") == 0) {
         printf(COLOR_GREEN "✓ Question 3 passed. (+7 points)" COLOR_RESET "\n");
         test_score += 7;
@@ -649,7 +761,7 @@ void play_level2(Player *player) {
     level_score += run_mini_exercise_L2();
 
     printf("\nGreat! Now let's try some more challenging questions.\n");
-    
+
     /* Run the additional exercise (1 easy, 1 medium, 1 hard) */
     level_score += run_additional_exercise_L2();
 
@@ -762,7 +874,7 @@ void play_level3(Player *player) {
         printf("Returning to menu...\n");
         return;
     }
-        printf("\n--- Teaching: if Statement ---\n");
+    printf("\n--- Teaching: if Statement ---\n");
     printf("An if statement is used to make decisions in a program.\n");
     printf("It runs code only when the condition is true.\n");
 
@@ -778,8 +890,6 @@ void play_level3(Player *player) {
 
     printf("\nPress Enter to continue to practice...");
     read_line(buffer, sizeof(buffer));
-
-    
 
     printf("\n--- Step-by-step Practice ---\n");
 
@@ -810,39 +920,38 @@ void play_level3(Player *player) {
         printf("Total score: %d\n", player->score);
     }
 }
+
 /* ---------------------------
    LEVEL 4: Arrays
    --------------------------- */
 
-/* ---------- Explanation Helper ---------- */
-static void explain_mistake_L4(int stage) {
+static void explain_mistake_L4(const char *expected, int test_case) {
+    (void)expected;
     printf(COLOR_YELLOW "\n💡 Explanation: " COLOR_RESET);
 
-    switch (stage) {
+    switch (test_case) {
         case 1:
-            printf("Arrays store multiple values of the same type.\n");
-            printf("The syntax is: int arr[size] = {values};\n");
+            printf("Array indexing in C starts from 0.\n");
+            printf("So a[0] refers to the first element.\n");
             break;
         case 2:
-            printf("Array indexing starts at 0.\n");
-            printf("So the third element is at index 2.\n");
+            printf("The third element has index 2.\n");
+            printf("Indexing goes 0, 1, 2.\n");
             break;
         case 3:
-            printf("Loops are used to process arrays efficiently.\n");
-            printf("Use arr[i] inside a for loop.\n");
+            printf("To access the third element, use arr[2];\n");
+            printf("Square brackets [] are required.\n");
             break;
     }
     printf("\n");
 }
 
-/* ---------- Mini Exercise ---------- */
 static int run_mini_exercise_L4(void) {
     char answer[128];
     int test_score = 0;
 
     printf("\n" COLOR_CYAN "=== Mini Exercise: Array Concepts ===" COLOR_RESET "\n");
 
-    /* Test Case 1 */
     printf("\nTest Case 1:\n");
     printf("Question: Given int a[3] = {4, 5, 6}; what is the value of a[0]?\n");
     printf("Answer: ");
@@ -850,14 +959,13 @@ static int run_mini_exercise_L4(void) {
     trim_spaces(answer);
 
     if (strcmp(answer, "4") == 0) {
-        printf(COLOR_GREEN "✓ Passed\n" COLOR_RESET);
+        printf(COLOR_GREEN "✓ Test Case 1 passed.\n" COLOR_RESET);
         test_score++;
     } else {
-        printf(COLOR_RED "✗ Failed. Expected: 4\n" COLOR_RESET);
-        explain_mistake_L4(1);
+        printf(COLOR_RED "✗ Test Case 1 failed. Expected: 4\n" COLOR_RESET);
+        explain_mistake_L4("4", 1);
     }
 
-    /* Test Case 2 */
     printf("\nTest Case 2:\n");
     printf("Question: What index represents the third element of an array?\n");
     printf("Answer: ");
@@ -865,14 +973,13 @@ static int run_mini_exercise_L4(void) {
     trim_spaces(answer);
 
     if (strcmp(answer, "2") == 0) {
-        printf(COLOR_GREEN "✓ Passed\n" COLOR_RESET);
+        printf(COLOR_GREEN "✓ Test Case 2 passed.\n" COLOR_RESET);
         test_score++;
     } else {
-        printf(COLOR_RED "✗ Failed. Expected: 2\n" COLOR_RESET);
-        explain_mistake_L4(2);
+        printf(COLOR_RED "✗ Test Case 2 failed. Expected: 2\n" COLOR_RESET);
+        explain_mistake_L4("2", 2);
     }
 
-    /* Test Case 3 */
     printf("\nTest Case 3:\n");
     printf("Question: Write the correct C expression to access the third element of array 'arr' (include semicolon).\n");
     printf("Answer: ");
@@ -880,24 +987,24 @@ static int run_mini_exercise_L4(void) {
     trim_spaces(answer);
 
     if (strcmp(answer, "arr[2];") == 0) {
-        printf(COLOR_GREEN "✓ Passed\n" COLOR_RESET);
+        printf(COLOR_GREEN "✓ Test Case 3 passed.\n" COLOR_RESET);
         test_score++;
     } else {
-        printf(COLOR_RED "✗ Failed. Expected: arr[2];\n" COLOR_RESET);
-        explain_mistake_L4(3);
+        printf(COLOR_RED "✗ Test Case 3 failed. Expected: arr[2];\n" COLOR_RESET);
+        explain_mistake_L4("arr[2];", 3);
     }
 
     printf("\nMini exercise finished. Passed %d / 3 cases.\n", test_score);
     return test_score * 3;
 }
 
-/* ---------- Main Level 4 ---------- */
 void play_level4(Player *player) {
     int level_score = 0;
     char buffer[64];
 
     printf("\n=== Level 4: Arrays ===\n");
-    printf("Description: Learn how to use arrays and process them with loops.\n");
+    printf("Description: Learn how to store multiple values using arrays,\n");
+    printf("access elements by index, and process data using loops.\n");
 
     printf("\nReady? (y/n): ");
     read_line(buffer, sizeof(buffer));
@@ -907,48 +1014,40 @@ void play_level4(Player *player) {
     }
 
     printf("\n--- Step-by-step Coding Practice ---\n");
-
-    /* ================= EASY ================= */
-    printf("\n" COLOR_CYAN "[EASY]" COLOR_RESET " Declare an array\n");
+    printf("Goal: Calculate the sum of elements in an integer array.\n");
 
     level_score += ask_code_step(
-        "Easy (2 pts): Declare an integer array named 'arr' with values 1, 2, and 3.",
+        "Step 1 (2 pts): Declare an integer array named 'arr' with values 1, 2, and 3.",
         "int arr[3] = {1, 2, 3};"
     ) ? 2 : 0;
 
-    /* ================= MEDIUM ================= */
-    printf("\n" COLOR_CYAN "[MEDIUM]" COLOR_RESET " Access array elements\n");
-
     level_score += ask_code_step(
-        "Medium (3 pts): Declare an integer variable named 'sum' and initialize it to 0.",
+        "Step 2 (2 pts): Declare an integer variable named 'sum' and initialize it to 0.",
         "int sum = 0;"
-    ) ? 3 : 0;
+    ) ? 2 : 0;
 
     level_score += ask_code_step(
-        "Medium (3 pts): Write a for loop that iterates from i = 0 while i < 3 (include '{').",
+        "Step 3 (3 pts): Write a for loop that iterates from i = 0 while i < 3 (include '{').",
         "for (int i = 0; i < 3; i++) {"
     ) ? 3 : 0;
 
-    /* ================= HARD ================= */
-    printf("\n" COLOR_CYAN "[HARD]" COLOR_RESET " Process array with loop\n");
-
     level_score += ask_code_step(
-        "Hard (4 pts): Inside the loop, add the current array element to sum.",
+        "Step 4 (3 pts): Inside the loop, add the current array element to sum.",
         "sum += arr[i];"
-    ) ? 4 : 0;
-
-    level_score += ask_code_step(
-        "Hard (3 pts): Close the for loop block.",
-        "}"
     ) ? 3 : 0;
 
     level_score += ask_code_step(
-        "Hard (4 pts): Print the sum using printf with format \"Sum = %d\\n\".",
+        "Step 5 (2 pts): Close the for loop block.",
+        "}"
+    ) ? 2 : 0;
+
+    level_score += ask_code_step(
+        "Step 6 (3 pts): Print the sum using printf with format \"Sum = %d\\n\".",
         "printf(\"Sum = %d\\n\", sum);"
-    ) ? 4 : 0;
+    ) ? 3 : 0;
 
     printf("\nYou have finished the guided coding steps.\n");
-    printf("Now we will test your understanding with a mini exercise.\n");
+    printf("Now we will check your understanding with a mini exercise.\n");
 
     level_score += run_mini_exercise_L4();
 
@@ -962,22 +1061,89 @@ void play_level4(Player *player) {
             printf("Failed to update your score.\n");
         }
     } else {
-        printf("No points earned. Review array concepts and try again!\n");
+        printf("No points earned this time. Review array concepts and try again!\n");
     }
 }
 
-/* ---------------------------
-   LEVEL 5: The 'switch case' Statement
-   --------------------------- */
+/* =======================================
+   Level 5: switch case (Helper Functions)
+   ======================================= */
+
+static int ask_code_step_with_explanation(const char *instruction,
+                                           const char *expected,
+                                           const char *explanation) {
+    char input[256];
+
+    while (1) {
+        printf("\n%s\n", instruction);
+        printf("Your code: ");
+        read_line(input, sizeof(input));
+        trim_spaces(input);
+
+        if (strcmp(input, expected) == 0) {
+            printf(COLOR_GREEN "Correct: %s" COLOR_RESET "\n", input);
+            return 1;
+        } else {
+            printf(COLOR_RED "Incorrect. Please try again." COLOR_RESET "\n");
+            printf(COLOR_RED "Reasoning:" COLOR_RESET " %s\n", explanation);
+            printf("Expected pattern: %s\n", expected);
+        }
+    }
+}
+
+static int run_mini_exercise_L5(void) {
+    char answer[128];
+    int test_score = 0;
+
+    printf("\n" COLOR_CYAN "=== Mini Exercise: switch case Concepts ===" COLOR_RESET "\n");
+
+    printf("\nTest Case 1:\n");
+    printf("Question: If no case matches the value in the switch statement, which command block is executed? (Answer with the specific C keyword)\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    if (strcmp(answer, "default") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 1 passed." COLOR_RESET "\n");
+        test_score += 1;
+    } else {
+        printf(COLOR_RED "✗ Test Case 1 failed. Expected: default" COLOR_RESET "\n");
+    }
+
+    printf("\nTest Case 2:\n");
+    printf("Question: Which statement must be placed at the end of each case block (unless fall-through is desired) to prevent the program from executing the next case? (Answer with the specific C keyword)\n");
+    printf("Answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    if (strcmp(answer, "break") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 2 passed." COLOR_RESET "\n");
+        test_score += 1;
+    } else {
+        printf(COLOR_RED "✗ Test Case 2 failed. Expected: break" COLOR_RESET "\n");
+    }
+
+    printf("\nTest Case 3:\n");
+    printf("Question: Write the correct C code line to start a case for the value 'A' (a character) in a switch statement (include the colon ':').\n");
+    printf("Your answer: ");
+    read_line(answer, sizeof(answer));
+    trim_spaces(answer);
+    if (strcmp(answer, "case 'A':") == 0) {
+        printf(COLOR_GREEN "✓ Test Case 3 passed." COLOR_RESET "\n");
+        test_score += 1;
+    } else {
+        printf(COLOR_RED "✗ Test Case 3 failed. Expected: case 'A':" COLOR_RESET "\n");
+    }
+
+    printf("\nMini exercise finished. You passed %d / 3 test cases.\n", test_score);
+    return test_score * 3;
+}
+
 void play_level5(Player *player) {
     int level_score = 0;
     char buffer[64];
 
     printf("\n=== Level 5: The 'switch case' Statement ===\n");
     printf("Description: Practice using the 'switch' control structure, including 'case', 'break', 'default', and fall-through logic.\n");
-    
 
-    // Ask if the player is ready
     printf("\nReady? (y/n): ");
     read_line(buffer, sizeof(buffer));
     if (buffer[0] != 'y' && buffer[0] != 'Y') {
@@ -987,21 +1153,18 @@ void play_level5(Player *player) {
 
     printf("\n--- Step-by-step Coding Practice (Easy/Medium/Hard) ---\n");
 
-    /* Easy: Initialize and start the switch (2 points) */
     level_score += ask_code_step_with_explanation(
         "Easy (2 points): Declare an integer variable named 'day' and start a switch statement using it.",
         "switch (day) {",
         "You must declare the switch statement using the 'switch' keyword, followed by the variable in parentheses, and an opening brace '{' to start the block."
     ) ? 2 : 0;
 
-    /* Medium: Simple case and break (3 points) */
     level_score += ask_code_step_with_explanation(
         "Medium (3 points): Inside the switch, create a case for the value 1. Print the string 'Monday' and ensure the flow stops after this case.",
         "case 1: printf(\"Monday\\n\"); break;",
         "Every case must end with a colon ':' and include a 'break;' statement to prevent 'fall-through' into the next case's code. Remember to use 'printf' correctly."
     ) ? 3 : 0;
 
-    /* Hard: Combined case (Fall-through) and default (5 points) */
     level_score += ask_code_step_with_explanation(
         "Hard (5 points): Write the code for case 6 and case 7 combined to print 'Weekend' (using fall-through), followed by the default case to print 'Error'.",
         "case 6: case 7: printf(\"Weekend\\n\"); break; default: printf(\"Error\\n\"); break;",
@@ -1011,13 +1174,11 @@ void play_level5(Player *player) {
     printf("\nYou have finished the guided coding steps.\n");
     printf("Now we will move on to a small exercise with test cases to check your understanding of switch concepts.\n");
 
-    /* Run mini exercise and add its score */
     level_score += run_mini_exercise_L5();
 
     printf("\nLevel 5 completed.\n");
     printf("You earned %d points in this level.\n", level_score);
 
-    // Update the player's total score
     if (level_score > 0) {
         if (update_player_score(player, level_score)) {
             printf("Your new total score: %d\n", player->score);
@@ -1028,7 +1189,6 @@ void play_level5(Player *player) {
         printf("No points earned this time. Review the 'switch case' concepts and try again!\n");
     }
 }
-/*----------------------End of Levels-----------------------------*/
 
 /* ===========================
    main.c (merged)
@@ -1132,7 +1292,4 @@ int main(void) {
     }
 
     return 0;
-
 }
-
-
