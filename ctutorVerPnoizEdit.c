@@ -1069,6 +1069,27 @@ void play_level4(Player *player) {
    Level 5: switch case (Helper Functions)
    ======================================= */
 
+/* Helper: explanation for Mini Exercise L5 errors */
+static void explain_mistake_L5(int test_case) {
+    printf(COLOR_YELLOW "\n💡 Explanation: " COLOR_RESET);
+
+    switch(test_case) {
+        case 1: // default
+            printf("The 'default' case is used as a catch-all block. If the switch expression does not match any 'case' labels, the code inside 'default:' is executed.\n");
+            break;
+
+        case 2: // break
+            printf("The 'break;' statement is crucial for exiting the switch block after a matching case is executed. Without it, the program will continue ('fall-through') to execute the code in the next case label.\n");
+            break;
+
+        case 3: // case 'A':
+            printf("Character literals must be enclosed in single quotes (' '). Integers and character literals are the only data types allowed directly in C 'case' labels.\n");
+            break;
+    }
+    printf("\n");
+}
+
+
 static int ask_code_step_with_explanation(const char *instruction,
                                            const char *expected,
                                            const char *explanation) {
@@ -1091,12 +1112,15 @@ static int ask_code_step_with_explanation(const char *instruction,
     }
 }
 
+//Mini exercise
+
 static int run_mini_exercise_L5(void) {
     char answer[128];
     int test_score = 0;
 
     printf("\n" COLOR_CYAN "=== Mini Exercise: switch case Concepts ===" COLOR_RESET "\n");
 
+    /* Test case 1: The 'default' keyword */
     printf("\nTest Case 1:\n");
     printf("Question: If no case matches the value in the switch statement, which command block is executed? (Answer with the specific C keyword)\n");
     printf("Answer: ");
@@ -1107,8 +1131,10 @@ static int run_mini_exercise_L5(void) {
         test_score += 1;
     } else {
         printf(COLOR_RED "✗ Test Case 1 failed. Expected: default" COLOR_RESET "\n");
+        explain_mistake_L5(1);
     }
 
+    /* Test case 2: Preventing fall-through */
     printf("\nTest Case 2:\n");
     printf("Question: Which statement must be placed at the end of each case block (unless fall-through is desired) to prevent the program from executing the next case? (Answer with the specific C keyword)\n");
     printf("Answer: ");
@@ -1119,8 +1145,10 @@ static int run_mini_exercise_L5(void) {
         test_score += 1;
     } else {
         printf(COLOR_RED "✗ Test Case 2 failed. Expected: break" COLOR_RESET "\n");
+        explain_mistake_L5(2);
     }
 
+    /* Test case 3: Writing a correct case for a character */
     printf("\nTest Case 3:\n");
     printf("Question: Write the correct C code line to start a case for the value 'A' (a character) in a switch statement (include the colon ':').\n");
     printf("Your answer: ");
@@ -1131,11 +1159,13 @@ static int run_mini_exercise_L5(void) {
         test_score += 1;
     } else {
         printf(COLOR_RED "✗ Test Case 3 failed. Expected: case 'A':" COLOR_RESET "\n");
+        explain_mistake_L5(3);
     }
 
     printf("\nMini exercise finished. You passed %d / 3 test cases.\n", test_score);
     return test_score * 3;
 }
+
 
 void play_level5(Player *player) {
     int level_score = 0;
@@ -1293,3 +1323,4 @@ int main(void) {
 
     return 0;
 }
+
